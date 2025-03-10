@@ -1,4 +1,4 @@
-# flask_gen/__main__.py
+# flask_init/__main__.py
 
 from .main import main
 

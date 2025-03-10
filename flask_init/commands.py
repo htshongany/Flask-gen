@@ -1,4 +1,4 @@
-# flask_gen/commands.py
+# flask_init/commands.py
 
 import click
 from flask.cli import AppGroup
