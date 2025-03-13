@@ -4,16 +4,19 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="Flask-init",
+    name="Flask-gen",
     version="0.1.0",
     author="Tshongani Hamadou",
     author_email="sirehtshongany@gmail.com",
     description="A command-line tool to generate Flask projects and applications.",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/htshongany/Flask-Init",
+    url="https://github.com/htshongany/Flask-gen",
     packages=setuptools.find_packages(),
-    package_dir={'flask_init.src': 'flask_init/src', 'flask_init': 'flask_init'},
+    package_dir={
+        'flask_gen.src': 'flask_gen/src',
+        'flask_gen': 'flask_gen'
+    },
     include_package_data=True,
     classifiers=[
         "Programming Language :: Python :: 3",
@@ -23,17 +26,18 @@ setuptools.setup(
     ],
     python_requires='>=3.7',
     install_requires=[
-        "Flask>=2.0.0,<3.0.0",
-        "Flask-SQLAlchemy>=2.5.0,<3.0.0",
-        "Flask-Migrate>=3.0.0,<4.0.0",
-        "python-dotenv>=0.15.0,<2.0.0",
+    "Flask>=2.0.0,<3.0.0",
+    "Flask-SQLAlchemy>=2.5.0,<3.0.0",
+    "Flask-Migrate>=3.0.0,<4.0.0",
+    "python-dotenv>=0.15.0,<2.0.0",
+    "SQLAlchemy>=1.4,<2.0"
     ],
     entry_points={
         'console_scripts': [
-            'flask-init=flask_init.main:main',
+            'flask-gen=flask_gen.cli:cli',
         ],
         'flask.commands': [
-            'init=flask_init.commands:init_cli',
+            'gen=flask_gen.commands:gen_cli',
         ],
     },
 )
