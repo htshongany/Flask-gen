@@ -3,17 +3,16 @@
 import click
 from flask.cli import AppGroup
 from flask_gen.src import project_creator, app_creator
-import flask_gen
 
 gen_cli = AppGroup('gen', help="Initialization commands for your Flask project.")
 
-@gen_cli.command('project')
-@click.argument("name")
-@click.argument("path", default=".")
-def init_project(name, path):
-    """Initialize a complete Flask project."""
-    project_creator.init_project(name, path)
-    click.echo(f"Project '{name}' has been initialized at {path}.")
+# @gen_cli.command('project')
+# @click.argument("name")
+# @click.argument("path", default=".")
+# def init_project(name, path):
+#     """Initialize a complete Flask project."""
+#     project_creator.init_project(name, path)
+#     click.echo(f"Project '{name}' has been initialized at {path}.")
 
 @gen_cli.command('app')
 @click.argument("name")
