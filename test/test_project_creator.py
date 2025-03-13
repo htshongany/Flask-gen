@@ -6,7 +6,7 @@ import sys
 # Ajouter le répertoire parent au sys.path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from flask_init.src import project_creator
+from flask_gen.src import project_creator
 
 class TestProjectCreator(unittest.TestCase):
 

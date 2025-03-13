@@ -6,7 +6,7 @@ import sys
 # Add the parent directory to sys.path to import flask_gen
 # sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from flask_init.src import app_creator
+from flask_gen.src import app_creator
 
 class TestAppCreator(unittest.TestCase):
 
