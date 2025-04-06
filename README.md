@@ -136,4 +136,4 @@ Your contributions are welcome. Submit issues or make a pull request in the [Git
 
 ## License
 
-This software is released under the MIT License. See the [LICENSE](LICENSE) file for more information.
+This software is released under the MIT License. See the [LICENSE](https://github.com/htshongany/Flask-gen/blob/main/LICENSE) file for more information.
