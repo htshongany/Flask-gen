@@ -3,7 +3,7 @@ from unittest.mock import patch, mock_open, call
 import os
 import sys
 
-# Ajouter le répertoire parent au sys.path
+# Add parent directory to sys.path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from flask_gen.src import project_creator
@@ -11,24 +11,24 @@ from flask_gen.src import project_creator
 class TestProjectCreator(unittest.TestCase):
 
     def setUp(self):
-        # Configuration initiale avant chaque test
+        # Initial setup before each test
         self.project_name = 'test_project'
         self.base_path = 'test_base_path'
         self.project_dir = os.path.join(self.base_path, self.project_name)
 
     def tearDown(self):
-        # Nettoyage après chaque test
+        # Cleanup after each test
         pass
 
     @patch('builtins.print')
     @patch('os.path.exists')
     def test_check_project_exists(self, mock_exists, mock_print):
-        # Simuler que le projet existe déjà
+        # Simulate that the project already exists
         mock_exists.return_value = True
         result = project_creator.check_project_exists(self.project_dir, self.project_name)
         self.assertTrue(result)
         mock_exists.assert_called_with(self.project_dir)
-        expected_message = f"Un projet nommé '{self.project_name}' existe déjà à l'emplacement {self.project_dir}."
+        expected_message = f"A project named '{self.project_name}' already exists at location {self.project_dir}."
         mock_print.assert_called_with(expected_message)
 
     @patch('builtins.print')
@@ -44,9 +44,9 @@ class TestProjectCreator(unittest.TestCase):
         calls = [call(directory, exist_ok=True) for directory in expected_directories]
         mock_makedirs.assert_has_calls(calls, any_order=True)
         self.assertEqual(mock_makedirs.call_count, len(expected_directories))
-        # Vérifier les messages print
+        # Check print messages
         for directory in expected_directories:
-            mock_print.assert_any_call(f"Dossier créé : {directory}")
+            mock_print.assert_any_call(f"Directory created: {directory}")
 
     def test_generate_core_init_content(self):
         content = project_creator.generate_core_init_content()
@@ -70,9 +70,9 @@ class TestProjectCreator(unittest.TestCase):
     def test_generate_error_template_content(self):
         error_code = 404
         content = project_creator.generate_error_template_content(error_code)
-        self.assertIn(f"<h1>Erreur {error_code}</h1>", content)
-        # Suppression de l'assertion vérifiant "{{ get_error_message(" car le template actuel ne l'inclut pas.
-        # Si vous intégrez get_error_message dans le template, retirez ce commentaire.
+        self.assertIn(f"<h1>Error {error_code}</h1>", content)
+        # Removed assertion checking for "{{ get_error_message(" since the current template doesn't include it.
+        # If you integrate get_error_message in the template, remove this comment.
 
     def test_generate_config_content(self):
         content = project_creator.generate_config_content()
@@ -85,7 +85,7 @@ class TestProjectCreator(unittest.TestCase):
         self.assertIn("migrate = Migrate()", content)
 
     def test_generate_run_content(self):
-        # Utilisation de generate_app_content() à la place de generate_run_content()
+        # Using generate_app_content() instead of generate_run_content()
         content = project_creator.generate_app_content()
         self.assertIn("if __name__ == '__main__':", content)
         self.assertIn("app.run(debug=DEBUG)", content)
@@ -110,7 +110,7 @@ class TestProjectCreator(unittest.TestCase):
         mock_makedirs.assert_called_with(os.path.dirname(file_path), exist_ok=True)
         mock_open_file.assert_called_with(file_path, 'w', encoding='utf-8')
         mock_open_file().write.assert_called_once_with(content)
-        mock_print.assert_called_with(f"Fichier créé : {file_path}")
+        mock_print.assert_called_with(f"File created: {file_path}")
 
     @patch('builtins.print')
     @patch('flask_gen.src.project_creator.create_file')
@@ -121,9 +121,9 @@ class TestProjectCreator(unittest.TestCase):
         project_creator.init_project(self.project_name, self.base_path)
         mock_exists.assert_called_with(self.project_dir)
         mock_create_dirs.assert_called_with(self.project_dir)
-        expected_file_count = 13  # Nombre total de fichiers à créer
+        expected_file_count = 13  # Total number of files to create
         self.assertEqual(mock_create_file.call_count, expected_file_count)
-        mock_print.assert_any_call(f"Création du projet dans : {self.project_dir}")
+        mock_print.assert_any_call(f"Creating project in: {self.project_dir}")
 
     @patch('builtins.print')
     @patch('os.path.exists')
@@ -131,7 +131,7 @@ class TestProjectCreator(unittest.TestCase):
         mock_exists.return_value = True
         result = project_creator.init_project(self.project_name, self.base_path)
         mock_exists.assert_called_with(self.project_dir)
-        expected_message = f"Un projet nommé '{self.project_name}' existe déjà à l'emplacement {self.project_dir}."
+        expected_message = f"A project named '{self.project_name}' already exists at location {self.project_dir}."
         mock_print.assert_called_with(expected_message)
         self.assertIsNone(result)
 

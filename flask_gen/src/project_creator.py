@@ -2,37 +2,37 @@ import os
 
 def check_project_exists(project_dir, project_name):
     """
-    Vérifie si un projet existe déjà au chemin donné.
-    Retourne True s'il existe, False sinon.
+    Checks if a project already exists at the given path.
+    Returns True if it exists, False otherwise.
     """
     if os.path.exists(project_dir):
-        print(f"Un projet nommé '{project_name}' existe déjà à l'emplacement {project_dir}.")
+        print(f"A project named '{project_name}' already exists at location {project_dir}.")
         return True
     return False
 
 def create_project_directories(project_dir):
     """
-    Crée les dossiers nécessaires pour le projet.
+    Creates the necessary directories for the project.
     """
     directories = [
         os.path.join(project_dir, "core"),
         os.path.join(project_dir, "core", "templates"),
-        os.path.join(project_dir, "core", "templates", "errors"),  # Pour les pages d'erreur
-        os.path.join(project_dir, "core", "static"),  # Pour les fichiers statiques
+        os.path.join(project_dir, "core", "templates", "errors"),  # For error pages
+        os.path.join(project_dir, "core", "static"),  # For static files
     ]
     for directory in directories:
         os.makedirs(directory, exist_ok=True)
-        print(f"Dossier créé : {directory}")
+        print(f"Directory created: {directory}")
 
 def generate_core_init_content():
     """
-    Génère le contenu pour le fichier core/__init__.py
+    Generates content for the core/__init__.py file
     """
     return "from .settings import create_app\n"
 
 def generate_core_settings_content(project_name):
     """
-    Génère le contenu pour le fichier core/settings.py
+    Generates content for the core/settings.py file
     """
     content = f'''import os
 from flask import Flask, render_template
@@ -45,15 +45,15 @@ def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
 
-    # Initialisation des extensions
+    # Initialize extensions
     db.init_app(app)
     migrate.init_app(app, db)
 
-    # Enregistrement des blueprints
+    # Register blueprints
     from core.urls import register_blueprints
     register_blueprints(app)
 
-    # Gestion des erreurs si l'application n'est pas en mode debug
+    # Error handling if application is not in debug mode
     if not DEBUG:
         @app.errorhandler(404)
         def not_found_error(error):
@@ -73,12 +73,12 @@ def create_app(config_class=Config):
 
 def generate_core_urls_content():
     """
-    Génère le contenu pour le fichier core/urls.py
+    Generates content for the core/urls.py file
     """
     content = '''"""
-Pour enregistrer les blueprints de votre application, importez-les et ajoutez-les ici.
+To register your application blueprints, import them and add them here.
 
-Exemple :
+Example:
     from blog.routes.urls import blog_register_blueprints
 
     def register_blueprints(app):
@@ -92,7 +92,7 @@ def register_blueprints(app):
 
 def generate_base_html_content(project_name):
     """
-    Génère le contenu pour le fichier core/templates/base.html
+    Generates content for the core/templates/base.html file
     """
     content = f'''<!doctype html>
 <html>
@@ -109,18 +109,18 @@ def generate_base_html_content(project_name):
 
 def generate_error_template_content(error_code):
     """
-    Génère le contenu pour les pages d'erreur.
+    Generates content for error pages.
     """
     content = f'''{{% extends "base.html" %}}
 {{% block content %}}
-<h1>Erreur {error_code}</h1>
+<h1>Error {error_code}</h1>
 {{% endblock %}}
 '''
     return content
 
 def generate_config_content():
     """
-    Génère le contenu pour le fichier config.py
+    Generates content for the config.py file
     """
     content = '''import os
 from dotenv import load_dotenv
@@ -136,7 +136,7 @@ class Config:
 
 def generate_extensions_content():
     """
-    Génère le contenu pour le fichier extensions.py
+    Generates content for the extensions.py file
     """
     content = '''from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -148,7 +148,7 @@ migrate = Migrate()
 
 def generate_app_content():
     """
-    Génère le contenu pour le fichier app.py
+    Generates content for the app.py file
     """
     content = '''from core.settings import create_app, DEBUG
 
@@ -161,7 +161,7 @@ if __name__ == '__main__':
 
 def generate_requirements_content():
     """
-    Génère le contenu pour le fichier requirements.txt
+    Generates content for the requirements.txt file
     """
     content = '''Flask
 Flask-SQLAlchemy
@@ -172,7 +172,7 @@ python-dotenv
 
 def generate_env_example_content():
     """
-    Génère le contenu pour le fichier .env.example
+    Generates content for the .env.example file
     """
     content = '''SECRET_KEY=your-secret-key
 DEBUG=True
@@ -183,30 +183,30 @@ FLASK_ENV=development
 
 def create_file(filepath, content):
     """
-    Crée un fichier avec le contenu spécifié.
+    Creates a file with the specified content.
     """
     os.makedirs(os.path.dirname(filepath), exist_ok=True)
     with open(filepath, "w", encoding="utf-8") as f:
         f.write(content)
-    print(f"Fichier créé : {filepath}")
+    print(f"File created: {filepath}")
 
 def init_project(project_name, base_path):
     """
-    Initialise un projet Flask complet avec configuration par défaut,
-    Flask-SQLAlchemy, Flask-Migrate, gestion des erreurs, et un fichier .env exemple.
+    Initializes a complete Flask project with default configuration,
+    Flask-SQLAlchemy, Flask-Migrate, error handling, and an example .env file.
     """
     project_dir = os.path.join(base_path, project_name)
 
-    # Vérifier si le projet existe déjà
+    # Check if project already exists
     if check_project_exists(project_dir, project_name):
-        return  # Sortir de la fonction sans créer le projet
+        return  # Exit the function without creating the project
 
-    print(f"Création du projet dans : {project_dir}")
+    print(f"Creating project in: {project_dir}")
 
-    # Créer les dossiers nécessaires
+    # Create necessary directories
     create_project_directories(project_dir)
 
-    # Créer les fichiers avec leur contenu
+    # Create files with their content
     files_to_create = {
         # core/__init__.py
         os.path.join(project_dir, "core", "__init__.py"): generate_core_init_content(),
@@ -240,8 +240,8 @@ def init_project(project_name, base_path):
         # .env.example
         os.path.join(project_dir, ".env.example"): generate_env_example_content(),
 
-        # core/static/styles.css (fichier CSS vide)
-        os.path.join(project_dir, "core", "static", "styles.css"): '/* Ajoutez vos styles CSS personnalisés ici */',
+        # core/static/styles.css (empty CSS file)
+        os.path.join(project_dir, "core", "static", "styles.css"): '/* Add your custom CSS styles here */',
     }
 
     for filepath, content in files_to_create.items():
